@@ -8,7 +8,7 @@ export async function loginAgent(email, password) {
 
   const normalizedEmail = email.trim().toLowerCase();
 
-  const agent = await prisma.user.findUnique({
+  const agent = await prisma.agent.findUnique({
     where: { email: normalizedEmail },
     select: {
       id: true,
@@ -16,25 +16,19 @@ export async function loginAgent(email, password) {
       name: true,
       password: true,
       role: true,
-      active: true,
     },
   });
 
   if (!agent) {
-    throw new AppError(401, 'Invalid email or password.');
+    throw new AppError(404, 'User not found.');
   }
 
+  const emailMatches = agent.email === normalizedEmail;
   const passwordMatches = agent.password && password === agent.password;
 
-  if (!passwordMatches) {
+  if (!emailMatches || !passwordMatches) {
     throw new AppError(401, 'Invalid email or password.');
   }
-
-  if (agent.active === false) {
-    throw new AppError(403, 'Agent account is disabled.');
-  }
-
-  // Return only the essential authenticated agent details.
   return {
     id: agent.id,
     email: agent.email,
