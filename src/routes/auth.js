@@ -1,13 +1,8 @@
 import { Router } from 'express';
 import { asyncHandler } from '../utils/errors.js';
 import { validateUserCreation, handleValidationErrors } from '../validators/index.js';
-import { agentLoginMiddleware } from '../middleware/auth.js';
-import { loginAgent } from '../controllers/userController.js';
 
 const router = Router();
-
-router.post('/', agentLoginMiddleware, loginAgent);
-router.post('/agent/login', agentLoginMiddleware, loginAgent);
 
 router.post(
   '/register',
