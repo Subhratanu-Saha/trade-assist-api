@@ -11,6 +11,8 @@ datasource db {
 }
 
 model agent {
+  @@map("agent")
+
   userid     String   @id @db.VarChar(40)
   name       String   @db.VarChar(100)
   dob        DateTime @db.Date
