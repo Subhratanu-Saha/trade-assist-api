@@ -1,11 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import { config, logger } from './config/index.js';
+import { config } from './config/index.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { asyncHandler } from './utils/errors.js';
 import routes from './routes/index.js';
+import loginRoutes from './routes/login.js';
 
 export const createApp = () => {
   const app = express();
@@ -37,7 +38,7 @@ export const createApp = () => {
   }));
 
   app.use(`/api/${config.apiVersion}`, routes);
-
+  app.use('/api/v1/auth', loginRoutes);
   app.use(notFoundHandler);
   app.use(errorHandler);
 

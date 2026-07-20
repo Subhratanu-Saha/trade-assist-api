@@ -1,4 +1,4 @@
-import { loginAgent as agentLoginService} from '../services/agentLoginService.js';
+import { loginAgentService } from '../services/agentLoginService.js';
 import { SuccessResponse } from '../utils/responses.js';
 
 export const getAgentAuth = async (req, res) => { //handles GET requests to the /agent/auth endpoint
@@ -21,7 +21,7 @@ export const loginAgent = async (req, res) => { //handles POST requests to the /
   try {    //extracts the email and password from the request body
     const { email, password } = req.body;
 
-    const agent = await agentLoginService.loginAgent(email, password);
+    const agent = await loginAgentService(email, password);
 
     return res.status(200).json(
       new SuccessResponse('Login successful', {
