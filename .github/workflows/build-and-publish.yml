@@ -18,6 +18,16 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Log pipeline metadata
+        run: |
+          mkdir -p logs
+          echo "Repository: $GITHUB_REPOSITORY" >> logs/pipeline-summary.log
+          echo "Branch: $GITHUB_REF_NAME" >> logs/pipeline-summary.log
+          echo "Commit: $GITHUB_SHA" >> logs/pipeline-summary.log
+          echo "Node version: $(node -v)" >> logs/pipeline-summary.log
+          echo "npm version: $(npm -v)" >> logs/pipeline-summary.log
+          echo "Workspace: $GITHUB_WORKSPACE" >> logs/pipeline-summary.log
+
       - name: Install dependencies
         run: npm install
 
@@ -26,3 +36,18 @@ jobs:
 
       - name: Deploy to render-server
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_URL }}
+
+      - name: Write final pipeline summary
+        if: always()
+        run: |
+          echo "Install step completed" >> logs/pipeline-summary.log
+          echo "Build step completed" >> logs/pipeline-summary.log
+          echo "Deploy step completed" >> logs/pipeline-summary.log
+
+      - name: Upload pipeline logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-logs
+          path: logs
+          if-no-files-found: warn
