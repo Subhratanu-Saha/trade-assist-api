@@ -2,27 +2,13 @@ import { AppError } from '../utils/errors.js';
 
 export const purchaseMiddleware = (req, res, next) => {
   try {
-    const { userId, symbol, quantity, price } = req.body;
+    const { customerId } = req.query;
 
-    if (!userId || !symbol || !quantity || !price) {
+    if (!customerId) {
       return next(
-        new AppError(400, 'userId, symbol, quantity and price are required')
+        new AppError(400, 'customerId is required')
       );
     }
-
-    if (quantity <= 0) {
-      return next(
-        new AppError(400, 'Quantity must be greater than 0')
-      );
-    }
-
-    if (price <= 0) {
-      return next(
-        new AppError(400, 'Price must be greater than 0')
-      );
-    }
-
-    req.body.type = 'BUY';
 
     next();
   } catch (error) {
