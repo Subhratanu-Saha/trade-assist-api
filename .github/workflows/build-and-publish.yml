@@ -35,5 +35,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Pre Build
+        run: node src/index.js
+
+      - name: Build
+        run: npm run build
+
       - name: Deploy to render-server
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_URL }}
