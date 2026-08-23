@@ -4,6 +4,17 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy (choose from dropdown)'
+        required: true
+        default: 'main'
+        type: choice
+        options:
+          - main
+          - feature
+          - release
 
 jobs:
   build:
@@ -12,6 +23,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          # Use selected branch when triggered via workflow_dispatch, otherwise use the event ref (e.g. push to main)
+          ref: ${{ github.event.inputs.branch || github.ref }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
