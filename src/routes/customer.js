@@ -13,7 +13,7 @@ router.get('/', customerSearchMiddleware, asyncHandler(async (req, res) => {
   const { email } = req.query;
   const customers = await searchCustomer(email);
 
-  if (!customers || customers.length === 0) {
+  if (!customers?.length) {
     return res.status(404).json(new ErrorResponse('No data found'));
   }
 
