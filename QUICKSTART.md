@@ -6,7 +6,13 @@ npm install
 ```
 
 ### 2. Configure Environment
-Update `.env` with your configuration (optional for basic app)
+Copy `.env.example` to `.env`, then replace the PostgreSQL connection string and other placeholder values:
+
+```bash
+copy .env.example .env
+```
+
+`DATABASE_URL` is required for agent login and all database-backed endpoints. The health and API status endpoints can run without it.
 
 ### 3. Start Development Server
 ```bash

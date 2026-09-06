@@ -1,9 +1,14 @@
 import { AppError } from '../utils/errors.js';
+import { config } from '../config/index.js';
 import prisma from '../utils/prisma.js';
 
 export async function loginAgentService(email, password) {
   if (!email || !password) {
     throw new AppError(400, 'Email and password are required.');
+  }
+
+  if (!config.database.url) {
+    throw new AppError(503, 'Agent login is unavailable because DATABASE_URL is not configured.');
   }
 
   const normalizedEmail = email.trim().toLowerCase();
