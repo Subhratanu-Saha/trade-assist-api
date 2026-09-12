@@ -12,10 +12,10 @@ export const getCustomerByEmail = async (req, res) => {
             });
         }
 
-        const customers = await searchCustomer(email);
+        const result = await searchCustomer(email);
 
         // Find exact email match
-        const customer = customers.find(
+        const customer = result.data.find(
             (customer) =>
                 customer.emailaddr?.toLowerCase() === email.toLowerCase()
         );

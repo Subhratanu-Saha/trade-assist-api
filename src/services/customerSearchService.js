@@ -36,5 +36,5 @@ export async function searchCustomer(search) {
     },
   });
 
-  return customers;
+  return {data: customers};
 }
