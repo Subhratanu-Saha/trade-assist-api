@@ -2,7 +2,7 @@ import prisma from '../utils/prisma.js';
 import { AppError } from '../utils/errors.js';
 
 export const getCasesByCustomerId = async (customerId) => {
-  const cases = await prisma.customer_case.findMany({
+  const cases = await prisma.caseRecord.findMany({
     where: {
       customerId: customerId,
     },
