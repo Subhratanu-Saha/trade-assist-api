@@ -2,7 +2,7 @@ import prisma from '../utils/prisma.js';
 import { AppError } from '../utils/errors.js';
 
 export const getCasesByCustomerId = async (customerId) => {
-  const cases = await prisma.customer_case.findMany({
+  const cases = await prisma.caseRecord.findMany({
     where: {
       customerId: customerId,
     },
@@ -25,7 +25,7 @@ const updateFields = [
 
 export const updateCase = async (payload) => {
   const caseId = String(payload.caseId);
-  const existingCase = await prisma.customer_case.findUnique({
+  const existingCase = await prisma.caseRecord.findUnique({
     where: { caseId },
   });
 
@@ -65,7 +65,7 @@ export const updateCase = async (payload) => {
     throw new AppError(400, 'At least one case field is required');
   }
 
-  return prisma.customer_case.update({
+  return prisma.caseRecord.update({
     where: { caseId },
     data,
     select: {
