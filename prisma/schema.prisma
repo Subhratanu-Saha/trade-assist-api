@@ -42,7 +42,7 @@ model purchase {
   customer      customer  @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction, map: "fk_purchase_customer")
 }
 
-model customer_case {
+model caseRecord {
   caseId            String   @id @db.VarChar(20)
   contactChannel    String?  @db.VarChar(20)
   customerNeed      String?  @db.VarChar(30)
@@ -51,8 +51,10 @@ model customer_case {
   notes             String?  @db.VarChar(200)
   isEscalated       Boolean  @default(false)
   isCompleted       Boolean  @default(false)
-  customerId        String?  @db.VarChar(20)
-  agentId           String?  @db.VarChar(20)
+  customerId        String   @db.VarChar(40)
+  agentId           String   @db.VarChar(40)
   sysCreatedDt      DateTime @default(now()) @db.Timestamp(6)
   sysLastModifiedDt DateTime @default(now()) @db.Timestamp(6)
+
+  @@map("customer_case")
 }
