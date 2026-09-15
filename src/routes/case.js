@@ -15,6 +15,7 @@ const router = Router();
 router.use(requestLogger);
 
 router.get('/list', caseMiddleware, getCasesByCustomerId);
+router.post('/update', caseMiddleware, updateCase);
 
 router.get('/retrieve', caseMiddleware, getCaseById);
 
