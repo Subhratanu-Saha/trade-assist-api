@@ -1,4 +1,5 @@
 import {
+  getCaseByCaseId as fetchCaseByCaseId,
   getCasesByCustomerId as fetchCasesByCustomerId,
   updateCase as updateCaseDetails,
 } from '../services/caseService.js';
@@ -25,11 +26,34 @@ export const getCasesByCustomerId = asyncHandler(async (req, res) => {
   }
 });
 
+export const getCaseById = asyncHandler(async (req, res) => {
+  try {
+    const singleCase = await fetchCaseByCaseId(req.query.caseId);
+
+    if (!singleCase) {
+      throw new AppError(404, 'Case record not found');
+    }
+
+    return res.status(200).json(
+      new SuccessResponse('Case retrieved successfully', singleCase)
+    );
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+
+    throw new AppError(500, 'Internal server error');
+  }
+});
+
 export const updateCase = asyncHandler(async (req, res) => {
   const updatedCase = await updateCaseDetails(req.body);
+
   const message = updatedCase.isCompleted
     ? 'Case completed successfully'
     : 'Case updated successfully';
 
-  return res.status(200).json(new SuccessResponse(message, updatedCase));
+  return res.status(200).json(
+    new SuccessResponse(message, updatedCase)
+  );
 });
