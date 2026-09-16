@@ -1,4 +1,4 @@
-const caseService = require("../services/caseServiceCaseIDGenerate.js");
+import caseService from "../services/caseServiceCaseIDGenerate.js";
 
 const generateCaseId = async (req, res) => {
   try {
@@ -18,6 +18,6 @@ const generateCaseId = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   generateCaseId,
 };

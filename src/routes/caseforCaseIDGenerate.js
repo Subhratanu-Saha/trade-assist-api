@@ -1,8 +1,9 @@
-const express = require("express");
-const { generateCaseId } = require("../controllers/caseControllerCaseIDGenerate");
+import express from "express";
+
+import caseController from "../controllers/caseControllerCaseIDGenerate.js";
 
 const router = express.Router();
 
-router.get("/generate", generateCaseId);
+router.get("/idgenerate", caseController.generateCaseId);
 
-module.exports = router;
+export default router;

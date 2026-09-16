@@ -1,8 +1,8 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const generateCaseId = async () => {
+const generateCaseId = async (customerId, agentId) => {
   const cases = await prisma.caseRecord.findMany({
     select: {
       caseId: true,
@@ -12,7 +12,7 @@ const generateCaseId = async () => {
   let maxNumber = 0;
 
   for (const record of cases) {
-    const match = /^CUST_(\d+)$/.exec(record.caseId);
+    const match = /^cust_(\d+)$/.exec(record.caseId);
 
     if (match) {
       const number = Number(match[1]);
@@ -23,17 +23,19 @@ const generateCaseId = async () => {
     }
   }
 
-  const nextCaseId = `CUST_${String(maxNumber + 1).padStart(3, "0")}`;
+  const nextCaseId = `cust_${String(maxNumber + 1).padStart(3, "0")}`;
 
   const newCase = await prisma.caseRecord.create({
     data: {
       caseId: nextCaseId,
+      customerId,
+      agentId,
     },
   });
 
   return newCase.caseId;
 };
 
-module.exports = {
+export default {
   generateCaseId,
 };
