@@ -51,8 +51,8 @@ model caseRecord {
   notes             String?  @db.VarChar(200)
   isEscalated       Boolean  @default(false)
   isCompleted       Boolean  @default(false)
-  customerId        String   @db.VarChar(40)
-  agentId           String   @db.VarChar(40)
+  customerId        String?   @db.VarChar(40)
+  agentId           String?   @db.VarChar(40)
   sysCreatedDt      DateTime @default(now()) @db.Timestamp(6)
   sysLastModifiedDt DateTime @default(now()) @db.Timestamp(6)
 
