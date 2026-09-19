@@ -9,7 +9,24 @@ export const getCasesByCustomerId = async (customerId) => {
     },
   });
 
-  return cases;
+  const open = cases
+    .filter((caseItem) => !caseItem.isCompleted)
+    .map((caseItem) => ({
+      ...caseItem,
+      status: 'open',
+    }));
+
+  const closed = cases
+    .filter((caseItem) => caseItem.isCompleted)
+    .map((caseItem) => ({
+      ...caseItem,
+      status: 'closed',
+    }));
+
+  return {
+    open,
+    closed,
+  };
 };
 
 // Retrieve Case Service
