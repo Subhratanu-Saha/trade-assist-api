@@ -1,5 +1,6 @@
 import prisma from "../utils/prisma.js";
 
+// List Case Service
 export const getCasesByCustomerId = async (customerId) => {
   const cases = await prisma.caseRecord.findMany({
     where: {
