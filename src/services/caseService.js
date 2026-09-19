@@ -1,6 +1,7 @@
 import prisma from '../utils/prisma.js';
 import { AppError } from '../utils/errors.js';
 
+// List Case Service
 export const getCasesByCustomerId = async (customerId) => {
   const cases = await prisma.caseRecord.findMany({
     where: {
@@ -11,6 +12,16 @@ export const getCasesByCustomerId = async (customerId) => {
   return cases;
 };
 
+// Retrieve Case Service
+export const getCaseByCaseId = async (caseId) => {
+  return prisma.caseRecord.findUnique({
+    where: {
+      caseId: caseId,
+    },
+  });
+};
+
+// Update Case Service
 const updateFields = [
   'contactChannel',
   'customerNeed',
@@ -25,6 +36,7 @@ const updateFields = [
 
 export const updateCase = async (payload) => {
   const caseId = String(payload.caseId);
+
   const existingCase = await prisma.caseRecord.findUnique({
     where: { caseId },
   });
@@ -54,10 +66,12 @@ export const updateCase = async (payload) => {
       throw new AppError(400, 'Invalid agentId');
     }
   }
-  
+
   const data = Object.fromEntries(
     updateFields
-      .filter((field) => Object.prototype.hasOwnProperty.call(payload, field))
+      .filter((field) =>
+        Object.prototype.hasOwnProperty.call(payload, field)
+      )
       .map((field) => [field, payload[field]])
   );
 
