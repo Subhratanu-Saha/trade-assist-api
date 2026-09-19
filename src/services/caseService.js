@@ -1,6 +1,5 @@
-import prisma from "../utils/prisma.js";
+import prisma from '../utils/prisma.js';
 
-// List Case Service
 export const getCasesByCustomerId = async (customerId) => {
   const cases = await prisma.caseRecord.findMany({
     where: {
@@ -8,12 +7,5 @@ export const getCasesByCustomerId = async (customerId) => {
     },
   });
 
-  const open = cases.filter((caseItem) => caseItem.status === "open");
-
-  const closed = cases.filter((caseItem) => caseItem.status === "closed");
-
-  return {
-    open,
-    closed,
-  };
+  return cases;
 };
