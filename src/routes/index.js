@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import userRoutes from "./users.js";
 import customerRoutes from "./customer.js";
 import purchaseRoutes from "./purchase.js";
@@ -11,6 +12,6 @@ router.use("/users", userRoutes);
 router.use("/customers", customerRoutes);
 router.use("/purchase", purchaseRoutes);
 router.use("/cases", caseRoutes);
-router.use("/cases", caseIDRoutes);
+router.use("/cases/id", caseIDRoutes);
 
 export default router;

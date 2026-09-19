@@ -9,21 +9,17 @@ const generateCaseId = async () => {
     },
   });
 
-  let maxNumber = 0;
+  let maxNumber = 10000000;
 
   for (const record of cases) {
-    const match = /^cust_(\d+)$/.exec(record.caseId);
+    const number = Number(record.caseId);
 
-    if (match) {
-      const number = Number(match[1]);
-
-      if (number > maxNumber) {
-        maxNumber = number;
-      }
+    if (Number.isInteger(number) && number > maxNumber) {
+      maxNumber = number;
     }
   }
 
-  const nextCaseId = `cust_${String(maxNumber + 1).padStart(3, "0")}`;
+  const nextCaseId = String(maxNumber + 1);
 
   const newCase = await prisma.caseRecord.create({
     data: {
