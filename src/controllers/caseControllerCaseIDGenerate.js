@@ -17,3 +17,7 @@ const generateCaseId = async (req, res) => {
     });
   }
 };
+
+export default {
+  generateCaseId,
+};
