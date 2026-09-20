@@ -10,7 +10,7 @@ export const getCasesByCustomerId = asyncHandler(async (req, res) => {
   try {
     const cases = await fetchCasesByCustomerId(req.query.customerId);
 
-    if (!cases || cases.length === 0) {
+    if (!cases || (cases.open.length === 0 && cases.closed.length === 0 )){
       throw new AppError(404, 'Case records not found');
     }
 
