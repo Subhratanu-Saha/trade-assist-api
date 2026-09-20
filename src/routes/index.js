@@ -12,6 +12,6 @@ router.use("/users", userRoutes);
 router.use("/customers", customerRoutes);
 router.use("/purchase", purchaseRoutes);
 router.use("/cases", caseRoutes);
-router.use("/cases/:id", caseIDRoutes);
+router.use("/cases/id", caseIDRoutes);
 
 export default router;
