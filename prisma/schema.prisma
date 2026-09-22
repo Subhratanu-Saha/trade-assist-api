@@ -58,3 +58,17 @@ model caseRecord {
 
   @@map("customer_case")
 }
+model customerFund {
+  fundId             String   @id @db.VarChar(30)
+  tenderType         String   @db.VarChar(20)
+  fundAmount         String   @db.VarChar(10)
+  reasonForFund      String?  @db.VarChar(100)
+  status             String   @db.VarChar(10)
+  customerId         String   @db.VarChar(30)
+  AgentId            String?  @db.VarChar(30)
+  Approver           String?  @db.VarChar(30)
+  sysCreatedDt       DateTime @default(now()) @db.Timestamp(6)
+  sysLastModifiedDt  DateTime @default(now()) @db.Timestamp(6)
+
+  @@map("customer_fund")
+}
