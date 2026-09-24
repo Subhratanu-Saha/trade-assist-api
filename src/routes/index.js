@@ -5,6 +5,7 @@ import customerRoutes from "./customer.js";
 import purchaseRoutes from "./purchase.js";
 import caseRoutes from "./case.js";
 import caseIDRoutes from "./caseforCaseIDGenerate.js";
+import fundRoutes from './fund.js';
 
 const router = Router();
 
@@ -13,5 +14,6 @@ router.use("/customers", customerRoutes);
 router.use("/purchase", purchaseRoutes);
 router.use("/cases", caseRoutes);
 router.use("/cases/id", caseIDRoutes);
+router.use("/funds", fundRoutes);
 
 export default router;
