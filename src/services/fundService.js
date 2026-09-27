@@ -1,3 +1,4 @@
+
 import prisma from "../utils/prisma.js";
 
 export async function updateFund({
@@ -55,3 +56,15 @@ export async function updateFund({
 
     return updatedFund;
 }
+
+export const getFundsByCustomerId = async (customerId) => {
+  return prisma.customerFund.findMany({
+    where: {
+      customerId: customerId,
+    },
+    orderBy: {
+      sysCreatedDt: 'desc',
+    },
+  });
+};
+
