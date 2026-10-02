@@ -20,32 +20,27 @@ export async function updateFund({
     if (!existingFund) {
         return null;
     }
+    const optionalFields = {
+        tenderType,
+        fundAmount,
+        reasonForFund,
+        status,
+        Approver,
+    };
 
     const data = {
         customerId,
         AgentId: agentId,
         sysLastModifiedDt: new Date(),
+         ...Object.fromEntries(
+            Object.entries(optionalFields).filter(
+                ([, value]) => value !== undefined
+            )
+        ),
     };
 
-    if (tenderType !== undefined) {
-        data.tenderType = tenderType;
-    }
-
-    if (fundAmount !== undefined) {
-        data.fundAmount = fundAmount;
-    }
-
-    if (reasonForFund !== undefined) {
-        data.reasonForFund = reasonForFund;
-    }
-
-    if (status !== undefined) {
-        data.status = status;
-    }
-
-    if (Approver !== undefined) {
-        data.Approver = Approver;
-    }
+   
+    
 
     const updatedFund = await prisma.customerFund.update({
         where: {

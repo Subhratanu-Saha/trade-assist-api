@@ -16,12 +16,7 @@ export const updateFund = asyncHandler(async (req, res) => {
             Approver,
         } = req.body;
 
-        if (!fundId || !customerId || !agentId) {
-            throw new AppError(
-                400,
-                'fundId, customerId and agentId are mandatory'
-            );
-        }
+        
 
         const updatedFund = await updateFundDetails({
             fundId,
