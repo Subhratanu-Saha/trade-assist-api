@@ -1,14 +1,16 @@
 name: Build and Publish
+
 run-name: Build and Test - ${{ github.ref_name }}
 
 on:
   push:
     branches:
       - main
+
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch to deploy (choose from dropdown)'
+        description: 'Branch to deploy'
         required: true
         default: 'main'
         type: choice
@@ -17,30 +19,46 @@ on:
           - feature
           - release
 
+permissions:
+  contents: write
+
 jobs:
   build:
+    if: ${{ github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'chore: increment patch version') }}
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          # Use selected branch when triggered via workflow_dispatch, otherwise use the event ref (e.g. push to main)
           ref: ${{ github.event.inputs.branch || github.ref }}
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Pre Build
-        run: node src/index.js
-
       - name: Build
         run: npm run build
 
       - name: Deploy to render-server
-        run: curl -X POST ${{ secrets.RENDER_DEPLOY_URL }}
+        run: curl --fail --show-error --silent -X POST "${{ secrets.RENDER_DEPLOY_URL }}"
+
+      - name: Checkout main for version update
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: version-update
+
+      - name: Increment patch version on main
+        working-directory: version-update
+        run: |
+          npm version patch --no-git-tag-version
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "chore: increment patch version"
+          git push origin HEAD:main
