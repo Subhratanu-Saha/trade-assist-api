@@ -1,6 +1,6 @@
 {
   "name": "trade-assist-api",
-  "version": "1.40.0",
+  "version": "1.0.0",
   "description": "Trade Assist Backend API",
   "main": "src/index.js",
   "type": "module",
@@ -34,12 +34,7 @@
     "nodemon": "^3.0.2",
     "prisma": "^5.7.1"
   },
-  "keywords": [
-    "express",
-    "typescript",
-    "prisma",
-    "postgresql"
-  ],
+  "keywords": ["express", "typescript", "prisma", "postgresql"],
   "author": "",
   "license": "MIT"
 }
