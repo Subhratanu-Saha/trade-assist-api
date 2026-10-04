@@ -24,7 +24,7 @@ permissions:
 
 jobs:
   build:
-    if: ${{ github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'chore: increment patch version') }}
+    if: "${{ github.event_name != 'push' || startsWith(github.event.head_commit.message, 'chore: increment patch version') == false }}"
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +36,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: Install dependencies
         run: npm install
