@@ -15,6 +15,17 @@ export const fundMiddleware = (req, res, next) => {
   }
 };
 
+export const fundRetrieveMiddleware = (req, res, next) => {
+    const fundId = String(req.query.fundId || '').trim();
+
+    if (!fundId) {
+        return next(new AppError(400, 'fundId is required'));
+    }
+
+    req.query.fundId = fundId;
+    return next();
+};
+
 export const fundUpdateMiddleware = (req, res, next) => {
     try {
         const { fundId, customerId, agentId } = req.body;

@@ -63,3 +63,10 @@ export const getFundsByCustomerId = async (customerId) => {
   });
 };
 
+export const getFundByFundId = async (fundId) => {
+  return prisma.customerFund.findUnique({
+    where: {
+      fundId,
+    },
+  });
+};

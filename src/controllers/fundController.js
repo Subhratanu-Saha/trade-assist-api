@@ -1,5 +1,6 @@
 
 import { updateFund as updateFundDetails,getFundsByCustomerId as fetchFundsByCustomerId, } from '../services/fundService.js';
+import { getFundByFundId as fetchFundByFundId } from '../services/fundService.js';
 import { AppError, asyncHandler } from '../utils/errors.js';
 import { SuccessResponse } from '../utils/responses.js';
 
@@ -65,4 +66,16 @@ export const getFundsByCustomerId = asyncHandler(async (req, res) => {
     new SuccessResponse('Funds retrieved successfully', funds)
   );
 
+});
+
+export const getFundById = asyncHandler(async (req, res) => {
+    const fund = await fetchFundByFundId(req.query.fundId);
+
+    if (!fund) {
+        throw new AppError(404, 'Fund record not found');
+    }
+
+    return res.status(200).json(
+        new SuccessResponse('Fund retrieved successfully', fund)
+    );
 });
