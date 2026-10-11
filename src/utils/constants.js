@@ -28,6 +28,9 @@ export const TRADE_TYPES = {
   SELL: 'SELL',
 };
 
+export const FUND_ID_PATTERN = /^F(\d+)$/;
+export const MAX_FUND_ID_ATTEMPTS = 10;
+
 export const ERROR_MESSAGES = {
   INVALID_CREDENTIALS: 'Invalid email or password',
   USER_ALREADY_EXISTS: 'User with this email already exists',
