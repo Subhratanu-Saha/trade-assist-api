@@ -38,6 +38,7 @@ Thumbs.db
 # Prisma
 .env.test.local
 .env.production.local
+/prisma/migrations/20261011000000_make_customer_fund_fields_nullable/
 
 # Misc
 *.pem
