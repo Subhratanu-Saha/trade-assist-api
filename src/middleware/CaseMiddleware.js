@@ -27,17 +27,15 @@ export const caseMiddleware = (req, res, next) => {
     }
 
     // List Case API
-    const customerId = req.method === 'GET' ? req.query.customerId : req.body?.customerId;
-
+    const customerId =
+      req.method === 'GET'
+        ? req.query.customerId
+        : req.body?.customerId;
 
     if (req.method === 'GET' && !customerId) {
       return next(
         new AppError(400, 'customerId is required')
       );
-    }
-
-    if (req.method === 'POST' && (!req.body || typeof req.body !== 'object')) {
-      return next(new AppError(400, 'Request body is required'));
     }
 
     next();
