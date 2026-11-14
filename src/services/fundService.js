@@ -1,5 +1,44 @@
 
 import prisma from "../utils/prisma.js";
+import { FUND_ID_PATTERN } from "../utils/constants.js";
+
+export async function createFund() {
+    const existingFunds = await prisma.customerFund.findMany({
+        where: {
+            fundId: {
+                startsWith: "F",
+            },
+        },
+        select: {
+            fundId: true,
+        },
+    });
+
+    const highestSequence = existingFunds.reduce((highest, fund) => {
+        const match = FUND_ID_PATTERN.exec(fund.fundId);
+
+        if (!match) {
+            return highest;
+        }
+
+        const sequence = BigInt(match[1]);
+        return sequence > highest ? sequence : highest;
+    }, 0n);
+    const fundId = `F${(highestSequence + 1n).toString().padStart(6, "0")}`;
+
+    return prisma.customerFund.create({
+        data: {
+            fundId,
+            tenderType: null,
+            fundAmount: null,
+            reasonForFund: null,
+            status: null,
+            customerId: null,
+            AgentId: null,
+            Approver: null,
+        },
+    });
+}
 
 export async function updateFund({
     fundId,
@@ -55,7 +94,7 @@ export async function updateFund({
 export const getFundsByCustomerId = async (customerId) => {
   return prisma.customerFund.findMany({
     where: {
-      customerId: customerId,
+      customerId,
     },
     orderBy: {
       sysCreatedDt: 'desc',

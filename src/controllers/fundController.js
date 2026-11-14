@@ -1,8 +1,22 @@
 
-import { updateFund as updateFundDetails,getFundsByCustomerId as fetchFundsByCustomerId, } from '../services/fundService.js';
+import {
+    createFund as createFundRecord,
+    updateFund as updateFundDetails,
+    getFundsByCustomerId as fetchFundsByCustomerId,
+} from '../services/fundService.js';
 import { getFundByFundId as fetchFundByFundId } from '../services/fundService.js';
 import { AppError, asyncHandler } from '../utils/errors.js';
 import { SuccessResponse } from '../utils/responses.js';
+
+export const createFund = asyncHandler(async (_req, res) => {
+    const fund = await createFundRecord();
+
+    return res.status(200).json({
+        success: 'true',
+        message: 'Fund id created successfully',
+        fundId: fund.fundId,
+    });
+});
 
 export const updateFund = asyncHandler(async (req, res) => {
     try {
