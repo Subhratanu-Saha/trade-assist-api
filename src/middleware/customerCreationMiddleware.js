@@ -30,7 +30,10 @@ export const customerCreationMiddleware = (req, res, next) => {
       !emailaddr.trim()
     ) {
       return next(
-        new AppError(400, "Customer ID, name and email are required")
+        new AppError(
+          400,
+          "Customer ID, name and email are required"
+        )
       );
     }
 
@@ -39,24 +42,65 @@ export const customerCreationMiddleware = (req, res, next) => {
     const trimmedName = name.trim();
     const trimmedEmail = emailaddr.trim();
 
-    // Validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Validate email length before format validation
+    // Database column is VARCHAR(150)
+    if (trimmedEmail.length > 150) {
+      return next(new AppError(400, "Email is too long"));
+    }
 
-    if (!emailRegex.test(trimmedEmail)) {
+    // Validate email structure
+    const emailParts = trimmedEmail.split("@");
+
+    if (emailParts.length !== 2) {
       return next(new AppError(400, "Invalid email format"));
     }
 
-    // Validate field lengths
+    const [localPart, domain] = emailParts;
+
+    // Validate local part
+    const localPartRegex = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+$/;
+
+    if (
+      !localPart ||
+      localPart.length > 64 ||
+      !localPartRegex.test(localPart) ||
+      localPart.startsWith(".") ||
+      localPart.endsWith(".") ||
+      localPart.includes("..")
+    ) {
+      return next(new AppError(400, "Invalid email format"));
+    }
+
+    // Validate domain
+    const domainParts = domain.split(".");
+
+    if (domainParts.length < 2) {
+      return next(new AppError(400, "Invalid email format"));
+    }
+
+    for (const part of domainParts) {
+      if (
+        !part ||
+        part.length > 63 ||
+        !/^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$/.test(part)
+      ) {
+        return next(new AppError(400, "Invalid email format"));
+      }
+    }
+
+    // Validate top-level domain
+    if (domainParts[domainParts.length - 1].length < 2) {
+      return next(new AppError(400, "Invalid email format"));
+    }
+
+    // Validate customer ID length
     if (trimmedCustomerId.length > 40) {
       return next(new AppError(400, "Customer ID is too long"));
     }
 
+    // Validate customer name length
     if (trimmedName.length > 100) {
       return next(new AppError(400, "Customer name is too long"));
-    }
-
-    if (trimmedEmail.length > 150) {
-      return next(new AppError(400, "Email is too long"));
     }
 
     // Validate optional fields
@@ -108,17 +152,24 @@ export const customerCreationMiddleware = (req, res, next) => {
       customerid: trimmedCustomerId,
       name: trimmedName,
       emailaddr: trimmedEmail,
-      ...(contactnum != null && { contactnum: contactnum.trim() }),
+      ...(contactnum != null && {
+        contactnum: contactnum.trim(),
+      }),
       ...(dob != null && {
         dob: new Date(`${dob}T00:00:00.000Z`),
       }),
-      ...(gender != null && { gender: gender.trim() }),
-      ...(address != null && { address: address.trim() }),
+      ...(gender != null && {
+        gender: gender.trim(),
+      }),
+      ...(address != null && {
+        address: address.trim(),
+      }),
     };
 
     next();
 
   } catch (error) {
-    next(new AppError(400, "Invalid customer data"));
+    // Forward unexpected errors to centralized error handler
+    next(error);
   }
 };
