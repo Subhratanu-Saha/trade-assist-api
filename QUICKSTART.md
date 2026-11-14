@@ -63,6 +63,9 @@ npm run prisma:seed      # Seed database
 
 ## Troubleshooting
 
+### Application Logs
+HTTP requests are logged once in the console and in `logs/all.log`. Errors are also written to `logs/error.log`. Request entries use the format `Trade-Assist API - METHOD /path - Status: CODE - Duration: TIMEms`; query-string values are excluded.
+
 ### Port Already in Use
 Change the PORT in `.env` file
 

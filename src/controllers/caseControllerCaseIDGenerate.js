@@ -1,4 +1,5 @@
 import caseService from "../services/caseServiceCaseIDGenerate.js";
+import { logger } from "../config/index.js";
 
 const generateCaseId = async (req, res) => {
   try {
@@ -9,7 +10,7 @@ const generateCaseId = async (req, res) => {
       caseId,
     });
   } catch (error) {
-    console.error("Error generating case ID:", error);
+    logger.error("Error generating case ID:", error);
 
     res.status(500).json({
       success: false,

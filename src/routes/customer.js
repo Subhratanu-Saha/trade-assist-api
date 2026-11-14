@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { requestLogger } from '../middleware/requestLogger.js';
 import { customerSearchMiddleware } from '../middleware/customerSearchMiddleware.js';
 import { searchCustomer } from '../services/customerSearchService.js';
 import { asyncHandler } from '../utils/errors.js';
@@ -8,8 +7,6 @@ import { customerCreationMiddleware } from '../middleware/customerCreationMiddle
 import { createCustomer } from '../services/customerService.js';
 
 const router = Router();
-
-router.use(requestLogger);
 
 router.get('/', customerSearchMiddleware, asyncHandler(async (req, res) => {
   const { email } = req.query;

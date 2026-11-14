@@ -12,6 +12,8 @@ export const createApp = () => {
   const app = express();
 
   app.set('trust proxy', 1);
+  app.use(requestLogger);
+  
 
   app.use(helmet());
 
@@ -24,8 +26,6 @@ export const createApp = () => {
 
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ limit: '10mb', extended: true }));
-
-  app.use(requestLogger);
 
   app.get('/health', asyncHandler(async (_req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
